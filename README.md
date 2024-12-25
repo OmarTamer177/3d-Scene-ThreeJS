@@ -5,7 +5,7 @@ proposed choice (which you don’t have to strictly follow but have to create so
 the same scale) might be a scene containing: 
 * Realistic sea water with moving waves and sun reflection.
 * Skybox
-* hadows and Lights 
+* Shadows and Lights 
 * Grassy Island next to the sea, preferably wavy due to wind.
 * Some Loaded Models (boats, houses, etc.), both moving and static.
 * Some Animated Models (people - animals – etc.).
