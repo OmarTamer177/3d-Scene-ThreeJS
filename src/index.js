@@ -1,19 +1,35 @@
 import * as THREE from 'three';
 
 import { OrbitControls } from '../node_modules/three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoader.js';
 
+// Init scene, camera and renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
 
-camera.position.set(10, 10, 10);
+camera.position.set(30, 30, 30);
+scene.fog = new THREE.Fog(0xffffff, 0.01);
 
 // Axis helper
 const axesHelper = new THREE.AxesHelper(100);
-scene.add(axesHelper);
+//scene.add(axesHelper);
+
+// Asset Loader
+const assetLoader = new GLTFLoader();
+assetLoader.load("../models/lighthouse_on_a_sea_rock.glb", function(gltf){
+  const model = gltf.scene;
+  model.scale.set(0.1, 0.1, 0.1);
+  model.position.y = 6;
+  model.castShadow = true;
+  model.receiveShadow = true;
+
+  scene.add(model);
+});
+
 
 // Add OrbitControls
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -22,10 +38,18 @@ controls.dampingFactor = 0.05;
 controls.target.set(0, 0, 0); // Set focus target
 controls.update();
 
+// Ambient Light
+const Ambientlight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(Ambientlight);
+
 // Directional Light
-const light = new THREE.AmbientLight(0xffffff, 1.5);
-light.position.set(10, 10, 10);
+const light = new THREE.DirectionalLight(0xffffff, 1.5);
+light.position.set(-100, 30, -100);
 scene.add(light);
+light.castShadow = true;
+
+const dLightHelper = new THREE.DirectionalLightHelper(light);
+//scene.add(dLightHelper);
 
 // Skybox
 const loader = new THREE.CubeTextureLoader();
@@ -39,9 +63,8 @@ const skyboxTexture = loader.load([
 ]);
 scene.background = skyboxTexture;
 
-// Water Shader
+// Water
 const waterGeometry = new THREE.PlaneGeometry(200, 200, 500, 500);
-
 const waterMaterial = new THREE.ShaderMaterial({
   vertexShader: `
     uniform float time;
@@ -183,6 +206,8 @@ const waterMaterial = new THREE.ShaderMaterial({
 });
 
 const water = new THREE.Mesh(waterGeometry, waterMaterial);
+water.castShadow = true;
+water.receiveShadow = true;
 water.rotation.x = -Math.PI / 2;
 scene.add(water);
 
