@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+import { OrbitControls } from './node_modules/three/examples/jsm/controls/OrbitControls.js';
+
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -7,25 +9,31 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-camera.position.set(0, 5, 10);
-camera.lookAt(0, 0, 0);
+camera.position.set(0, 10, 0);
+
+// Add OrbitControls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; // Adds smooth movement
+controls.dampingFactor = 0.05;
+controls.target.set(0, 0, 0); // Set focus target
+controls.update();
 
 // Directional Light
-const light = new THREE.DirectionalLight(0xffffff, 1.5);
+const light = new THREE.AmbientLight(0xffffff, 1.5);
 light.position.set(10, 10, 10);
-//scene.add(light);
+scene.add(light);
 
 // Skybox
 const loader = new THREE.CubeTextureLoader();
 const skyboxTexture = loader.load([
-  'bg.jpg', // Positive X
-  'bg.jpg', // Negative X
-  'bg.jpg', // Positive Y
-  'bg.jpg', // Negative Y
-  'bg.jpg', // Positive Z
-  'bg.jpg', // Negative Z
+  'skybox/side_3.png', // Positive X
+  'skybox/side_1.png', // Negative X
+  'skybox/top.png', // Positive Y
+  'skybox/floor.png', // Negative Y
+  'skybox/side_2.png', // Positive Z
+  'skybox/side_4.png', // Negative Z
 ]);
-//scene.background = skyboxTexture;
+scene.background = skyboxTexture;
 
 // Water Shader
 const waterGeometry = new THREE.PlaneGeometry(100, 100, 200, 200);
@@ -101,7 +109,7 @@ const waterMaterial = new THREE.ShaderMaterial({
   `,
   uniforms: {
     time: { value: 0 },
-    //skybox: { value: skyboxTexture },
+    skybox: { value: skyboxTexture },
   },
   transparent: true,
   side: THREE.DoubleSide,
