@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ocean Scene</title>
+  </head>
+  <body>
+    <div id="HUD">
+      <div class="hud-content">
+        <h1 class="title">Ocean Explorer</h1>
+        
+        <div class="controls-section">
+          <h2>Controls</h2>
+          <div class="controls-list">
+            <div class="control-item">
+              <span class="key">W/S</span>
+              <span class="action">Forward/Back</span>
+            </div>
+            <div class="control-item">
+              <span class="key">A/D</span>
+              <span class="action">Turn Left/Right</span>
+            </div>
+            <div class="control-item">
+              <span class="key">2/3</span>
+              <span class="action">Change View</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="view-section">
+          <h2>Current View</h2>
+          <span id="viewMode">Follow Camera</span>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
