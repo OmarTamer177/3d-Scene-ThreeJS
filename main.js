@@ -437,11 +437,14 @@ function init() {
 
   updateSun();
 
-  controls = new OrbitControls( camera, renderer.domElement );
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI * 0.495;
-  controls.target.set( 0, 10, 0 );
   controls.minDistance = 40.0;
   controls.maxDistance = 200.0;
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.rotateSpeed = 0.5;
   controls.update();
 
   // GUI
@@ -492,13 +495,30 @@ function onWindowResize() {
 
 function cameraSetter() {
   if(player.player) {
-    if(view==1) {
-      camera.position.set(player.player.position.x+32, 40, player.player.position.z+130)
-      camera.lookAt(player.player.position)
+    if(view == 1) {
+      // Update controls target to follow ship
+      controls.target.set(
+        player.player.position.x,
+        player.player.position.y,
+        player.player.position.z
+      );
+      controls.enabled = true;
+      
+      // Only set initial camera position when switching to view 1
+      if (controls.lastView !== 1) {
+        camera.position.set(
+          player.player.position.x + 32,
+          40,
+          player.player.position.z + 130
+        );
+        controls.lastView = 1;
+      }
     }
-    else if(view==2) {
-      camera.position.set(player.player.position.x, 600, player.player.position.z)
-      camera.lookAt(player.player.position)
+    else if(view == 2) {
+      controls.enabled = false;
+      camera.position.set(player.player.position.x, 600, player.player.position.z);
+      camera.lookAt(player.player.position);
+      controls.lastView = 2;
     }
   }
 }
@@ -508,6 +528,10 @@ function animate() {
   render();
   player.update();
   cameraSetter();
+  
+  if(view == 1) {
+    controls.update();
+  }
   
   if(Date.now() - startTime > 5000) {
     spawnTreasures();
