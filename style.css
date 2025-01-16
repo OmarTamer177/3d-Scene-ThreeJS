@@ -99,3 +99,51 @@ h2 {
     right: 10px;
   }
 }
+
+#healthBar {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.health-container {
+  width: 200px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.health-fill {
+  width: 100%;
+  height: 100%;
+  background: #2ecc71;
+  transition: width 0.3s;
+}
+
+.health-text {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: white;
+  line-height: 20px;
+  text-shadow: 1px 1px 2px black;
+}
+
+#killFeed {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+}
+
+.kill-message {
+  color: white;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+}
